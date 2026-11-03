@@ -1,0 +1,38 @@
+INSTALAR NODE_MODULES
+npm install
+
+INSTALAR SHARP
+npm install --save-dev sharp
+
+
+REDMINEZIONAR LOGO
+node -e 'const sharp=require("sharp"); Promise.all([sharp("public/images/logo.png").resize(192,192,{fit:"contain",background:{r:255,g:255,b:255,alpha:1}}).png().toFile("public/images/icon-192.png"),sharp("public/images/logo.png").resize(512,512,{fit:"contain",background:{r:255,g:255,b:255,alpha:1}}).png().toFile("public/images/icon-512.png")]).then(()=>console.log("Iconos creados correctamente")).catch(err=>{console.error(err);process.exit(1)})'
+
+CONFIGURACIÓN DE LOGO
+node -e "const sharp=require('sharp'); Promise.all(['public/images/icon-192.png','public/images/icon-512.png'].map(async f=>{const m=await sharp(f).metadata(); console.log(f+': '+m.width+'x'+m.height)})).catch(console.error)"
+
+DEBERÍAN VER EN CONSOLA LO SIGUIENTE:
+public/images/icon-192.png: 192x192
+public/images/icon-512.png: 512x512
+
+COPIAR Y PEGAR EL SIGUIENTE FRAGMENTO DENTRO DEL MANIFIESTO
+"icons": [
+  {
+    "src": "/images/icon-192.png",
+    "sizes": "192x192",
+    "type": "image/png",
+    "purpose": "any"
+  },
+  {
+    "src": "/images/icon-512.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "any"
+  }
+]
+
+GENERAR UNA VERSIÓN PARA WEB PARA VERIFICAR TENER ICONO DE INSTALACIÓN.
+npx expo export --platform web
+
+EJECUTAR EL SERVIDOR
+npx expo start --web
